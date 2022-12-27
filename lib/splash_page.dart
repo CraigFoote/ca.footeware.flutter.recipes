@@ -22,7 +22,7 @@ class SplashPageState extends State<SplashPage> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(

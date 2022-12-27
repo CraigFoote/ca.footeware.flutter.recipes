@@ -157,7 +157,18 @@ class SearchPageState extends State<SearchPage> {
     );
   }
 
-  _searchRecipes(int pageKey) {}
+  _searchRecipes(int pageKey) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return SearchResultsPage(
+            searchTerm: searchTerm,
+            isTag: false,
+          );
+        },
+      ),
+    );
+  }
 
   void searchByTag(String tag) {
     Navigator.of(context).push(

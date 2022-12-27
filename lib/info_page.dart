@@ -14,23 +14,20 @@ class InfoPage extends StatelessWidget {
           title,
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/images/programmer.jpg',
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Linkify(
-                text: 'Another fine mess by http://Footeware.ca',
-                onOpen: _openUrl,
-              ),
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Image.asset(
+          'assets/images/programmer.jpg',
+        ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Linkify(
+              text: 'Another fine mess by http://Footeware.ca',
+              onOpen: _openUrl,
             ),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 
