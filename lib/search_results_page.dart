@@ -17,140 +17,194 @@ class SearchResultsPage extends StatefulWidget {
 }
 
 class SearchResultsPageState extends State<SearchResultsPage> {
-  late int _pageNumber;
-  final int _pageSize = 10;
-  late List<Recipe> _recipes;
-  late bool _loading;
-  late bool _error;
-  late bool _isLastPage;
-  final int _nextPageTrigger = 3;
+  late List<bool> _isOpen;
 
   @override
   void initState() {
+    _isOpen = [false, false];
     super.initState();
-    _loading = true;
-    _isLastPage = false;
-    _error = false;
-    _pageNumber = 0;
-    _recipes = [];
-    fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Results"),
+        title: const Text("test"),
       ),
-      body: buildRecipesPage(),
-    );
-  }
-
-  buildRecipesPage() {
-    if (_recipes.isEmpty) {
-      if (_loading) {
-        return const Center(
-            child: Padding(
-          padding: EdgeInsets.all(8),
-          child: CircularProgressIndicator(),
-        ));
-      } else if (_error) {
-        return Center(child: Text(_error.toString()));
-      }
-    }
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(8.0),
-      child: ExpansionPanelList(
-        dividerColor: Colors.deepPurple,
-        elevation: 3.0,
-        expansionCallback: (int index, bool isExpanded) {
-          setState(() {
-            _recipes[index].isExpanded = !isExpanded;
-          });
-        },
-        children: getContent(),
+      body: SingleChildScrollView(
+        child: ExpansionPanelList(
+          dividerColor: Colors.deepPurpleAccent,
+          elevation: 3.0,
+          expandedHeaderPadding: const EdgeInsets.all(12.0),
+          children: [
+            ExpansionPanel(
+              canTapOnHeader: true,
+              headerBuilder: (context, isExpanded) => const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'one',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20.0,
+                      color: Colors.deepPurple),
+                ),
+              ),
+              body: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('one one\none', style: TextStyle(fontSize: 18.0),),
+                  ),
+                ],
+              ),
+              isExpanded: _isOpen.isNotEmpty ? _isOpen[0] : false,
+            ),
+          ],
+          expansionCallback: (i, isOpen) => setState(() {
+            _isOpen[i] = !isOpen;
+          }),
+        ),
       ),
     );
-  }
-
-  getContent() {
-    List<ExpansionPanel> list = [];
-    for (Recipe recipe in _recipes) {
-      int index = _recipes.indexOf(recipe);
-      if (index == _recipes.length - _nextPageTrigger) {
-        fetchData();
-      }
-      ExpansionPanel panel = ExpansionPanel(
-        canTapOnHeader: true,
-        isExpanded: true,
-        headerBuilder: (context, isExpanded) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(recipe.headerValue, style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w900)),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(recipe.expandedValue, style: const TextStyle(fontSize: 20.0),),
-        ),
-      );
-      list.add(panel);
-    }
-    return list;
-  }
-
-  Future<void> fetchData() async {
-    try {
-      String url;
-      if (widget.isTag) {
-        url =
-            'http://footeware.ca:8060/recipes/search/tags?tag=${widget.searchTerm}&pageNumber=$_pageNumber&pageSize=$_pageSize';
-      } else {
-        url =
-            'http://footeware.ca:8060/recipes/search?term=${widget.searchTerm}&pageNumber=$_pageNumber&pageSize=$_pageSize';
-      }
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {
-          HttpHeaders.authorizationHeader: 'Basic Y3JhaWc6Y2hvY29sYXRl',
-        },
-      );
-      final responseList = jsonDecode(response.body);
-      List<Recipe> recipeList = [];
-      List<dynamic> rawList = responseList['recipes'];
-      for (Map<String, dynamic> map in rawList) {
-        String name = map['name']!;
-        String body = map['body']!;
-        List<dynamic> images = map['images'];
-        List<dynamic> tags = map['tags'];
-        recipeList.add(Recipe(
-            images: toStringList(images),
-            tags: toStringList(tags),
-            expandedValue: body,
-            headerValue: name));
-      }
-      setState(() {
-        _isLastPage = _recipes.length < _pageSize;
-        _loading = false;
-        _pageNumber = _pageNumber + 1;
-        _recipes.addAll(recipeList);
-      });
-    } catch (e) {
-      print("error --> $e");
-      setState(() {
-        _loading = false;
-        _error = true;
-      });
-    }
-  }
-
-  //TODO why the hell is this necessary?
-  List<String> toStringList(List list) {
-    List<String> result = [];
-    for (String string in list) {
-      result.add(string);
-    }
-    return result;
   }
 }
+
+//
+//   late int _pageNumber;
+//   final int _pageSize = 10;
+//   late List<Recipe> _recipes;
+//   late bool _loading;
+//   late bool _error;
+//   late bool _isLastPage;
+//   final int _nextPageTrigger = 3;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _loading = true;
+//     _isLastPage = false;
+//     _error = false;
+//     _pageNumber = 0;
+//     _recipes = [];
+//     fetchData();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Results"),
+//       ),
+//       body: buildRecipesPage(),
+//     );
+//   }
+//
+//   buildRecipesPage() {
+//     if (_recipes.isEmpty) {
+//       if (_loading) {
+//         return const Center(
+//             child: Padding(
+//           padding: EdgeInsets.all(8),
+//           child: CircularProgressIndicator(),
+//         ));
+//       } else if (_error) {
+//         return Center(child: Text(_error.toString()));
+//       }
+//     }
+//     return SingleChildScrollView(
+//       padding: const EdgeInsets.all(8.0),
+//       child: ExpansionPanelList(
+//         dividerColor: Colors.deepPurple,
+//         elevation: 3.0,
+//         expansionCallback: (int index, bool isExpanded) {
+//           setState(() {
+//             _recipes[index].isExpanded = !isExpanded;
+//           });
+//         },
+//         children: getContent(),
+//       ),
+//     );
+//   }
+//
+//   getContent() {
+//     List<ExpansionPanel> list = [];
+//     for (Recipe recipe in _recipes) {
+//       int index = _recipes.indexOf(recipe);
+//       if (index == _recipes.length - _nextPageTrigger) {
+//         fetchData();
+//       }
+//       ExpansionPanel panel = ExpansionPanel(
+//         canTapOnHeader: true,
+//         isExpanded: true,
+//         headerBuilder: (context, isExpanded) => Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: Text(recipe.headerValue, style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w900)),
+//         ),
+//         body: Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: Text(recipe.expandedValue, style: const TextStyle(fontSize: 20.0),),
+//         ),
+//       );
+//       list.add(panel);
+//     }
+//     return list;
+//   }
+//
+//   Future<void> fetchData() async {
+//     try {
+//       String url;
+//       if (widget.isTag) {
+//         url =
+//             'http://footeware.ca:8060/recipes/search/tags?tag=${widget.searchTerm}&pageNumber=$_pageNumber&pageSize=$_pageSize';
+//       } else {
+//         url =
+//             'http://footeware.ca:8060/recipes/search?term=${widget.searchTerm}&pageNumber=$_pageNumber&pageSize=$_pageSize';
+//       }
+//       final response = await http.get(
+//         Uri.parse(url),
+//         headers: {
+//           HttpHeaders.authorizationHeader: 'Basic Y3JhaWc6Y2hvY29sYXRl',
+//         },
+//       );
+//       final responseList = jsonDecode(response.body);
+//       int total = responseList['total'];
+//       List<Recipe> recipeList = [];
+//       List<dynamic> rawList = responseList['recipes'];
+//       for (Map<String, dynamic> map in rawList) {
+//         String name = map['name']!;
+//         String body = map['body']!;
+//         List<dynamic> images = map['images'];
+//         List<dynamic> tags = map['tags'];
+//         recipeList.add(Recipe(
+//             images: toStringList(images),
+//             tags: toStringList(tags),
+//             expandedValue: body,
+//             headerValue: name));
+//       }
+//       setState(() {
+//         _isLastPage = _recipes.length < _pageSize;
+//         _loading = false;
+//         _pageNumber = _pageNumber + 1;
+//         _recipes.addAll(recipeList);
+//       });
+//     } catch (e) {
+//       print("error --> $e");
+//       setState(() {
+//         _loading = false;
+//         _error = true;
+//       });
+//     }
+//   }
+//
+//   //TODO why the hell is this necessary?
+//   List<String> toStringList(List list) {
+//     List<String> result = [];
+//     for (String string in list) {
+//       result.add(string);
+//     }
+//     return result;
+//   }
+// }
 
 //   children: Builder(BuildContext context, int index, builder:
 //     itemCount: _recipes.length + (_isLastPage ? 0 : 1),
