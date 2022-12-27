@@ -38,106 +38,110 @@ class SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) {
-                      return const InfoPage(
-                        title: 'Info',
-                      );
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) {
+                    return const InfoPage(
+                      title: 'Info',
+                    );
+                  },
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.info,
+            ),
+          ),
+        ],
+      ),
+      body: <Widget>[
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _searchController,
+                    maxLength: 50,
+                    enableSuggestions: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Search',
+                    ),
+                    onSubmitted: (value) {
+                      searchTerm = value;
+                      _searchRecipes(0);
                     },
                   ),
-                );
-              },
-              child: const Icon(
-                Icons.info,
+                  const SizedBox(height: 25),
+                  const Divider(
+                    color: Colors.deepPurple,
+                    thickness: 2,
+                  ),
+                  FutureBuilder<Wrap>(
+                    future: futureAllTags,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return snapshot.data!;
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const CircularProgressIndicator();
+                    },
+                  ),
+                  const Divider(
+                    color: Colors.deepPurple,
+                    thickness: 2,
+                  ),
+                  const SizedBox(height: 25),
+                ],
               ),
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: const Text('Page 2'),
+        ),
+      ][currentPageIndex],
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          indicatorColor: Colors.deepPurpleAccent,
+          labelTextStyle: MaterialStateProperty.all(
+            const TextStyle(
+                color: Colors.deepPurple,
+                fontSize: 16,
+                fontWeight: FontWeight.w400),
+          ),
+        ),
+        child: NavigationBar(
+          selectedIndex: currentPageIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          backgroundColor: Colors.amber,
+          destinations: const <Widget>[
+            NavigationDestination(
+              selectedIcon: Icon(Icons.search),
+              icon: Icon(Icons.search_outlined),
+              label: 'Search',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.browse_gallery),
+              icon: Icon(Icons.browse_gallery_outlined),
+              label: 'Browse',
             ),
           ],
         ),
-        body: <Widget>[
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Center(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _searchController,
-                      maxLength: 50,
-                      enableSuggestions: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Search',
-                      ),
-                      onSubmitted: (value) {
-                        searchTerm = value;
-                        _searchRecipes(0);
-                      },
-                    ),
-                    const SizedBox(height: 25),
-                    const Divider(
-                      color: Colors.deepPurple,
-                      thickness: 2,
-                    ),
-                    FutureBuilder<Wrap>(
-                      future: futureAllTags,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return snapshot.data!;
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                    const Divider(
-                      color: Colors.deepPurple,
-                      thickness: 2,
-                    ),
-                    const SizedBox(height: 25),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: const Text('Page 2'),
-          ),
-        ][currentPageIndex],
-        bottomNavigationBar: NavigationBarTheme(
-          data: NavigationBarThemeData(
-            indicatorColor: Colors.deepPurpleAccent,
-            labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(color: Colors.deepPurple, fontSize: 16, fontWeight: FontWeight.w400),
-            ),
-          ),
-          child: NavigationBar(
-            selectedIndex: currentPageIndex,
-            onDestinationSelected: (int index) {
-              setState(() {
-                currentPageIndex = index;
-              });
-            },
-            backgroundColor: Colors.amber,
-            destinations: const <Widget>[
-              NavigationDestination(
-                selectedIcon: Icon(Icons.search),
-                icon: Icon(Icons.search_outlined),
-                label: 'Search',
-              ),
-              NavigationDestination(
-                selectedIcon: Icon(Icons.browse_gallery),
-                icon: Icon(Icons.browse_gallery_outlined),
-                label: 'Browse',
-              ),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 
   Future<Wrap> _getAllTags() async {
