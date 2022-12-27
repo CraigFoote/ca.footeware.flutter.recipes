@@ -111,9 +111,9 @@ class SearchPageState extends State<SearchPage> {
         ][currentPageIndex],
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
-            indicatorColor: Colors.amberAccent,
+            indicatorColor: Colors.deepPurpleAccent,
             labelTextStyle: MaterialStateProperty.all(
-              const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              const TextStyle(color: Colors.deepPurple, fontSize: 16, fontWeight: FontWeight.w400),
             ),
           ),
           child: NavigationBar(
