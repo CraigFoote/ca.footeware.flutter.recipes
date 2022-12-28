@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_recipes/browse_page.dart';
 import 'package:flutter_recipes/search_results_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -39,7 +40,10 @@ class SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: const TextStyle(fontFamily: "ConeriaScript", fontSize: 25.0),
+        ),
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -79,10 +83,6 @@ class SearchPageState extends State<SearchPage> {
                     },
                   ),
                   const SizedBox(height: 25),
-                  const Divider(
-                    color: Colors.deepPurple,
-                    thickness: 2,
-                  ),
                   FutureBuilder<Wrap>(
                     future: futureAllTags,
                     builder: (context, snapshot) {
@@ -94,20 +94,12 @@ class SearchPageState extends State<SearchPage> {
                       return const CircularProgressIndicator();
                     },
                   ),
-                  const Divider(
-                    color: Colors.deepPurple,
-                    thickness: 2,
-                  ),
-                  const SizedBox(height: 25),
                 ],
               ),
             ),
           ),
         ),
-        Container(
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
+        const BrowsePage(),
       ][currentPageIndex],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(

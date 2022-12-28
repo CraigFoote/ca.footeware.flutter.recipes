@@ -93,50 +93,51 @@ class SearchResultsPageState extends State<SearchResultsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(_title),
-        ),
-        body: PagedListView<int, Recipe>(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Recipe>(
-            itemBuilder: (context, item, index) => Card(
-              margin: const EdgeInsets.all(10.0),
-              elevation: 2.0,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) {
-                          return RecipePage(
-                            recipe: item,
-                          );
-                        },
+      appBar: AppBar(
+        title: Text(_title),
+      ),
+      body: PagedListView<int, Recipe>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Recipe>(
+          itemBuilder: (context, item, index) => Card(
+            margin: const EdgeInsets.all(10.0),
+            elevation: 2.0,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) {
+                        return RecipePage(
+                          recipe: item,
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      item.name,
+                      style: const TextStyle(
+                        fontSize: 20.0,
                       ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        item.name,
-                        style: const TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      const Icon(
-                        Icons.arrow_right,
-                        color: Colors.deepPurple,
-                        size: 24.0,
-                      ),
-                    ],
-                  ),
+                    ),
+                    const Icon(
+                      Icons.arrow_right,
+                      color: Colors.deepPurple,
+                      size: 24.0,
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   setTitle() {
