@@ -13,7 +13,7 @@ class RecipePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(recipe.name),
+        title: Text(recipe.name, style: const TextStyle(fontSize: 18.0),),
         actions: [
           ElevatedButton(
             onPressed: () {
