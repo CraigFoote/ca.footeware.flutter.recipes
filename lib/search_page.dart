@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_recipes/browse_page.dart';
-import 'package:flutter_recipes/search_results_page.dart';
+import 'package:flutter_recipes/results_page.dart';
 import 'package:http/http.dart' as http;
 
 import 'info_page.dart';
@@ -63,74 +62,39 @@ class SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
-      body: <Widget>[
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Center(
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _searchController,
-                    maxLength: 50,
-                    enableSuggestions: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Search',
-                    ),
-                    onSubmitted: (value) {
-                      searchTerm = value;
-                      _searchRecipes(0);
-                    },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Column(
+              children: [
+                TextField(
+                  controller: _searchController,
+                  maxLength: 50,
+                  enableSuggestions: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Search',
                   ),
-                  const SizedBox(height: 25),
-                  FutureBuilder<Wrap>(
-                    future: futureAllTags,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return snapshot.data!;
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                ],
-              ),
+                  onSubmitted: (value) {
+                    searchTerm = value;
+                    _searchRecipes(0);
+                  },
+                ),
+                const SizedBox(height: 25),
+                FutureBuilder<Wrap>(
+                  future: futureAllTags,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return snapshot.data!;
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                ),
+              ],
             ),
           ),
-        ),
-        const BrowsePage(),
-      ][currentPageIndex],
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          indicatorColor: Colors.deepPurpleAccent.shade100,
-          labelTextStyle: MaterialStateProperty.all(
-            const TextStyle(
-                color: Colors.deepPurple,
-                fontSize: 16,
-                fontWeight: FontWeight.w400),
-          ),
-        ),
-        child: NavigationBar(
-          selectedIndex: currentPageIndex,
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
-          },
-          backgroundColor: Colors.amber,
-          destinations: const <Widget>[
-            NavigationDestination(
-              selectedIcon: Icon(Icons.search),
-              icon: Icon(Icons.search_outlined),
-              label: 'Search',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.browse_gallery),
-              icon: Icon(Icons.browse_gallery_outlined),
-              label: 'Browse',
-            ),
-          ],
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:flutter_recipes/recipe.dart';
@@ -13,6 +14,16 @@ class RecipePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(recipe.name),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              _share(context);
+            },
+            child: const Icon(
+              Icons.share,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10.0),
@@ -45,5 +56,9 @@ class RecipePage extends StatelessWidget {
         child: Image.memory(
       base64Decode(base64.substring(23)),
     ));
+  }
+
+  Future<void> _share(BuildContext context) async {
+    Share.share("Annie Foote's ${recipe.name} recipe\n\n${recipe.body}");
   }
 }

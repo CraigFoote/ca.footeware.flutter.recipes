@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_recipes/recipe_page.dart';
+import 'package:flutter_recipes/search_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_recipes/recipe.dart';
@@ -28,7 +29,7 @@ class SearchResultsPageState extends State<SearchResultsPage> {
 
   @override
   void initState() {
-    _title = "";
+    _title = widget.isTag ? "tag '${widget.searchTerm}'" : widget.searchTerm;
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -95,6 +96,24 @@ class SearchResultsPageState extends State<SearchResultsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) {
+                    return const SearchPage(
+                      title: "Annie Foote's Recipes",
+                    );
+                  },
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.search,
+            ),
+          ),
+        ],
       ),
       body: PagedListView<int, Recipe>(
         pagingController: _pagingController,
