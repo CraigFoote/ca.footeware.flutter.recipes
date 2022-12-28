@@ -107,6 +107,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.0"
+  insta_image_viewer:
+    dependency: "direct main"
+    description:
+      name: insta_image_viewer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   js:
     dependency: transitive
     description:
@@ -163,13 +170,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
-  pinch_zoom:
-    dependency: "direct main"
-    description:
-      name: pinch_zoom
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   plugin_platform_interface:
     dependency: transitive
     description:
