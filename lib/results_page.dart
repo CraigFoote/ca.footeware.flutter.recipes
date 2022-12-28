@@ -162,8 +162,8 @@ class SearchResultsPageState extends State<SearchResultsPage> {
   setTitle() {
     setState(() {
       _title = widget.isTag
-          ? "$_total with tag '${widget.searchTerm}'"
-          : "$_total with '${widget.searchTerm}'";
+          ? "Tag '${widget.searchTerm}': $_total"
+          : "${widget.searchTerm}: $_total";
     });
   }
 }
