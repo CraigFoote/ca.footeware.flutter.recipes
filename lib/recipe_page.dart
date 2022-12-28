@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_recipes/recipe.dart';
 
@@ -27,14 +26,7 @@ class RecipePage extends StatelessWidget {
                   style: const TextStyle(fontSize: 22.0),
                 ),
               ),
-              const Text(
-                "Tap image to zoom",
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: Colors.deepPurple,
-                ),
-              ),
-              for (String base64 in recipe.images) getImage(base64, context)
+              for (String base64 in recipe.images) getImage(base64)
             ],
           ),
         ),
@@ -42,13 +34,14 @@ class RecipePage extends StatelessWidget {
     );
   }
 
-  getImage(String base64, BuildContext context) {
-    return InstaImageViewer(
-      child: Image(
-        image: MemoryImage(
-          base64Decode(base64.substring(23)),
-        ),
+  getImage(String base64) {
+    return InteractiveViewer(
+      maxScale: 5.0,
+      minScale: 0.5,
+      child: Image.memory(
+        base64Decode(base64.substring(23)),
       ),
+
     );
   }
 }
