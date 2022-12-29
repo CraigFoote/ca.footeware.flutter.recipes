@@ -29,7 +29,7 @@ class SearchResultsPageState extends State<SearchResultsPage> {
 
   @override
   void initState() {
-    _title = widget.isTag ? "tag '${widget.searchTerm}'" : widget.searchTerm;
+    _title = widget.isTag ? "Tag '${widget.searchTerm}'" : widget.searchTerm;
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
