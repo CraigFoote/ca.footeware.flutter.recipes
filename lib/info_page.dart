@@ -32,8 +32,11 @@ class InfoPage extends StatelessWidget {
   }
 
   void _openUrl(link) async {
-    if (await canLaunchUrl(link.url)) {
-      await launchUrl(link.url);
+    if (await canLaunchUrl(Uri.parse(link.url))) {
+      await launchUrl(
+        Uri.parse(link.url),
+        mode: LaunchMode.externalApplication,
+      );
     } else {
       throw 'Could not launch $link';
     }
