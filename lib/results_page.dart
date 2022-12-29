@@ -96,24 +96,6 @@ class SearchResultsPageState extends State<SearchResultsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) {
-                    return const SearchPage(
-                      title: "Annie Foote's Recipes",
-                    );
-                  },
-                ),
-              );
-            },
-            child: const Icon(
-              Icons.search,
-            ),
-          ),
-        ],
       ),
       body: PagedListView<int, Recipe>(
         pagingController: _pagingController,
