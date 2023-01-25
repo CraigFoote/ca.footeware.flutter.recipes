@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_recipes/recipe.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class SearchResultsPage extends StatefulWidget {
-  const SearchResultsPage(
+class ResultsPage extends StatefulWidget {
+  const ResultsPage(
       {Key? key, required this.searchTerm, required this.isTag})
       : super(key: key);
 
@@ -15,10 +15,10 @@ class SearchResultsPage extends StatefulWidget {
   final bool isTag;
 
   @override
-  State<StatefulWidget> createState() => SearchResultsPageState();
+  State<StatefulWidget> createState() => ResultsPageState();
 }
 
-class SearchResultsPageState extends State<SearchResultsPage> {
+class ResultsPageState extends State<ResultsPage> {
   static const _pageSize = 20;
   int _total = 0;
   late String _title;
@@ -35,15 +35,21 @@ class SearchResultsPageState extends State<SearchResultsPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchPage(int pageNumber) async {
     try {
       String url;
       if (widget.isTag) {
         url =
-            'http://footeware.ca:8060/recipes/search/tags?tag=${widget.searchTerm}&pageNumber=$pageNumber&pageSize=$_pageSize';
+            'http://footeware.ca:9000/recipes/search/tags?tag=${widget.searchTerm}&pageNumber=$pageNumber&pageSize=$_pageSize';
       } else {
         url =
-            'http://footeware.ca:8060/recipes/search?term=${widget.searchTerm}&pageNumber=$pageNumber&pageSize=$_pageSize';
+            'http://footeware.ca:9000/recipes/search?term=${widget.searchTerm}&pageNumber=$pageNumber&pageSize=$_pageSize';
       }
       final response = await http.get(
         Uri.parse(url),

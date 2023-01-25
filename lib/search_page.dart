@@ -50,7 +50,7 @@ class SearchPageState extends State<SearchPage> {
                 MaterialPageRoute(
                   builder: (_) {
                     return const InfoPage(
-                      title: 'Info',
+                      title: 'About',
                     );
                   },
                 ),
@@ -102,7 +102,7 @@ class SearchPageState extends State<SearchPage> {
 
   Future<Wrap> _getAllTags() async {
     final response = await http.get(
-      Uri.parse('http://footeware.ca:8060/recipes/tags'),
+      Uri.parse('http://footeware.ca:9000/recipes/tags'),
       headers: {
         HttpHeaders.authorizationHeader: 'Basic Y3JhaWc6Y2hvY29sYXRl',
       },
@@ -131,7 +131,7 @@ class SearchPageState extends State<SearchPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
-          return SearchResultsPage(
+          return ResultsPage(
             searchTerm: searchTerm,
             isTag: false,
           );
@@ -144,7 +144,7 @@ class SearchPageState extends State<SearchPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
-          return SearchResultsPage(
+          return ResultsPage(
             searchTerm: tag,
             isTag: true,
           );

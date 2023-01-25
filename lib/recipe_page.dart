@@ -88,7 +88,7 @@ class RecipePage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
-          return SearchResultsPage(
+          return ResultsPage(
             searchTerm: tag,
             isTag: true,
           );

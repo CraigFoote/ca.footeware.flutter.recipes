@@ -3,20 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_recipes/search_page.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends StatelessWidget {
   const SplashPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  SplashPageState createState() => SplashPageState();
-}
-
-class SplashPageState extends State<SplashPage> {
-  @override
   Widget build(BuildContext context) {
     return FlutterSplashScreen(
       duration: const Duration(milliseconds: 4000),
-      defaultNextScreen: SearchPage(title: widget.title),
+      defaultNextScreen: SearchPage(title: title),
       backgroundColor: Colors.white,
       splashScreenBody: Center(
         child: Padding(

@@ -1,6 +1,6 @@
 # flutter_recipes
 
-Accesses  the REST API
+Accesses the Recipes REST API.
 
 ## Getting Started
 
