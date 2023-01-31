@@ -40,6 +40,7 @@ dependencies:
   gesture_zoom_box: ^0.0.4
   share_plus: ^6.3.0
   flutter_launcher_icons: ^0.11.0
+  cached_network_image: ^3.2.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

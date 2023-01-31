@@ -1,11 +1,11 @@
 class Recipe {
-  List<String> images;
+  List<String> imageIds;
   List<String> tags;
   String body;
   String name;
 
   Recipe({
-    required this.images,
+    required this.imageIds,
     required this.tags,
     required this.body,
     required this.name,

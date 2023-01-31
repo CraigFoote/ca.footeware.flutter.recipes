@@ -1,9 +1,9 @@
-import 'dart:convert';
-import 'package:flutter_recipes/results_page.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:flutter_recipes/recipe.dart';
+import 'package:flutter_recipes/results_page.dart';
+import 'package:gesture_zoom_box/gesture_zoom_box.dart';
+import 'package:share_plus/share_plus.dart';
 
 class RecipePage extends StatelessWidget {
   const RecipePage({super.key, required this.recipe});
@@ -14,7 +14,10 @@ class RecipePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(recipe.name, style: const TextStyle(fontSize: 18.0),),
+        title: Text(
+          recipe.name,
+          style: const TextStyle(fontSize: 18.0),
+        ),
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -46,18 +49,24 @@ class RecipePage extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               ),
             ),
-            for (String base64 in recipe.images) getImage(base64)
+            for (String imageId in recipe.imageIds) getImage(imageId)
           ],
         ),
       ),
     );
   }
 
-  getImage(String base64) {
+  getImage(String imageId) {
     return GestureZoomBox(
-        child: Image.memory(
-      base64Decode(base64.substring(23)),
-    ));
+      child: CachedNetworkImage(
+        imageUrl: 'http://footeware.ca:9000/recipes/images/$imageId',
+        placeholder: (context, url) =>
+            const CircularProgressIndicator(color: Colors.deepPurple),
+        httpHeaders: const {
+          "Authorization": 'Basic Y3JhaWc6Y2hvY29sYXRl',
+        },
+      ),
+    );
   }
 
   Future<void> _share(BuildContext context) async {

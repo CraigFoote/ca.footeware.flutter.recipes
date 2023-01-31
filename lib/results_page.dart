@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_recipes/recipe_page.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_recipes/recipe.dart';
+import 'package:flutter_recipes/recipe_page.dart';
+import 'package:http/http.dart' as http;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ResultsPage extends StatefulWidget {
-  const ResultsPage(
-      {Key? key, required this.searchTerm, required this.isTag})
+  const ResultsPage({Key? key, required this.searchTerm, required this.isTag})
       : super(key: key);
 
   final String searchTerm;
@@ -66,10 +66,10 @@ class ResultsPageState extends State<ResultsPage> {
       for (Map<String, dynamic> map in rawList) {
         String name = map['name']!;
         String body = map['body']!;
-        List<dynamic> images = map['images'];
+        List<dynamic> imageIds = map['imageIds'];
         List<dynamic> tags = map['tags'];
         recipeList.add(Recipe(
-            images: toStringList(images),
+            imageIds: toStringList(imageIds),
             tags: toStringList(tags),
             body: body,
             name: name));
